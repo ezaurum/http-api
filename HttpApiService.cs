@@ -116,15 +116,19 @@ namespace Ezaurum.HttpAPI
             if (null == responseStream)
                 throw new InvalidOperationException("response stream is null.");
 
-            if (response.StatusCode == HttpStatusCode.NoContent)
+            HttpStatusCode resultCode = response.StatusCode;
+
+            if (resultCode  == HttpStatusCode.NoContent)
             {
                 res = null;
-                return response.StatusCode;
+                return resultCode;
             }               
 
             var jsonSerializer = new DataContractJsonSerializer(typeof(TRes));
             res = jsonSerializer.ReadObject(responseStream) as TRes;
-            return response.StatusCode;
+            response.Close();
+
+            return resultCode;
         }
     }
 }
