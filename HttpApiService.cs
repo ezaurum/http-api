@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace Ezaurum.HttpAPI
 {
@@ -110,11 +111,13 @@ namespace Ezaurum.HttpAPI
             HttpWebResponse response) where TRes : class
         {
             if (null == response)
-                throw new InvalidOperationException("response is null."); 
+                throw new InvalidOperationException("response is null.");
 
             var responseStream = response.GetResponseStream();
             if (null == responseStream)
                 throw new InvalidOperationException("response stream is null.");
+
+            StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);            
 
             HttpStatusCode resultCode = response.StatusCode;
 
@@ -122,10 +125,13 @@ namespace Ezaurum.HttpAPI
             {
                 res = null;
                 return resultCode;
-            }               
+            }
+
+            byte[] b = Encoding.UTF8.GetBytes(sr.ReadToEnd()); 
 
             var jsonSerializer = new DataContractJsonSerializer(typeof(TRes));
-            res = jsonSerializer.ReadObject(responseStream) as TRes;
+
+            res = jsonSerializer.ReadObject(new MemoryStream(b)) as TRes;
             response.Close();
 
             return resultCode;
