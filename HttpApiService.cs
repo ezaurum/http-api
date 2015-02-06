@@ -9,7 +9,6 @@ namespace Ezaurum.HttpAPI
     public class HttpApiService
     {
         private readonly string _requestServer;
-
         private readonly string _userAgent;
 
         public HttpApiService(string requestServer)
@@ -24,8 +23,7 @@ namespace Ezaurum.HttpAPI
 
         #region get method
 
-        private HttpWebRequest MakeGetRequest(string url,
-            string sessionId = null, string contentType = "application/json")
+        private HttpWebRequest MakeGetRequest(string url, string contentType = "application/json")
         {
             var httpWebRequest =
                 (HttpWebRequest) WebRequest.Create(_requestServer + url);
@@ -33,8 +31,6 @@ namespace Ezaurum.HttpAPI
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = contentType;
             httpWebRequest.UserAgent = _userAgent;
-            if (null != sessionId)
-                httpWebRequest.Headers.Add("Session-Id", sessionId);
 
             return httpWebRequest;
         }
@@ -53,7 +49,7 @@ namespace Ezaurum.HttpAPI
         }
 
         #endregion
-        
+
         #region post method
 
         public bool IsSuccessPost<TReq, TRes>(string uri, TReq request, out TRes response)
@@ -74,7 +70,7 @@ namespace Ezaurum.HttpAPI
         }
 
         private HttpWebRequest MakePostRequest<TReq>(string url, TReq body,
-            string sessionId = null, string contentType = "application/json")
+            string contentType = "application/json")
         {
             var stream = new MemoryStream();
             var ser = new DataContractJsonSerializer(typeof (TReq));
@@ -88,8 +84,6 @@ namespace Ezaurum.HttpAPI
             httpWebRequest.Method = "POST";
             httpWebRequest.ContentType = contentType;
             httpWebRequest.UserAgent = _userAgent;
-            if (null != sessionId)
-                httpWebRequest.Headers.Add("Session-Id", sessionId);
 
             using (
                 var streamWriter =
@@ -104,7 +98,7 @@ namespace Ezaurum.HttpAPI
         }
 
         #endregion
-        
+
         #region put method
 
         public bool IsSuccessPut<TReq, TRes>(string uri, TReq request, out TRes response)
@@ -125,7 +119,7 @@ namespace Ezaurum.HttpAPI
         }
 
         private HttpWebRequest MakePutRequest<TReq>(string url, TReq body,
-            string sessionId = null, string contentType = "application/json")
+            string contentType = "application/json")
         {
             var stream = new MemoryStream();
             var ser = new DataContractJsonSerializer(typeof (TReq));
@@ -139,8 +133,6 @@ namespace Ezaurum.HttpAPI
             httpWebRequest.Method = "PUT";
             httpWebRequest.ContentType = contentType;
             httpWebRequest.UserAgent = _userAgent;
-            if (null != sessionId)
-                httpWebRequest.Headers.Add("Session-Id", sessionId);
 
             using (
                 var streamWriter =
@@ -162,7 +154,7 @@ namespace Ezaurum.HttpAPI
             HttpWebRequest request) where TRes : class
         {
             HttpWebResponse response = null;
-            HttpStatusCode result;
+            HttpStatusCode result = 0;
             try
             {
                 response = request.GetResponse() as HttpWebResponse;
@@ -173,43 +165,51 @@ namespace Ezaurum.HttpAPI
             }
             finally
             {
-                result = GetResponseObject(out res, response);
+                if (null != response)
+                {
+                    result = GetResponseObject(out res, response);
+                    response.Close();
+                }
+                else
+                {
+                    result = HttpStatusCode.BadRequest;
+                    res = null;
+                }
             }
+
             return result;
         }
 
         private static HttpStatusCode GetResponseObject<TRes>(out TRes res,
             HttpWebResponse response) where TRes : class
         {
-            if (null == response)
-                throw new InvalidOperationException("response is null.");
-
-            var responseStream = response.GetResponseStream();
+            Stream responseStream = response.GetResponseStream();
             if (null == responseStream)
                 throw new InvalidOperationException("response stream is null.");
 
-            StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);
-
-            HttpStatusCode resultCode = response.StatusCode;
-
-            if (resultCode == HttpStatusCode.NoContent)
+            HttpStatusCode resultCode;
+            string readToEnd;
+            using (var sr = new StreamReader(responseStream, Encoding.UTF8))
             {
-                res = null;
-                return resultCode;
-            }
+                resultCode = response.StatusCode;
 
-            string readToEnd = sr.ReadToEnd();
+                if (resultCode == HttpStatusCode.NoContent)
+                {
+                    res = null;
+                    return resultCode;
+                }
+
+                readToEnd = sr.ReadToEnd();
+            }
             byte[] b = Encoding.UTF8.GetBytes(readToEnd);
 
             var jsonSerializer = new DataContractJsonSerializer(typeof (TRes));
 
             res = jsonSerializer.ReadObject(new MemoryStream(b)) as TRes;
-            response.Close();
 
             return resultCode;
         }
 
         #endregion
-
     }
 }
