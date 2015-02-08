@@ -7,7 +7,7 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <licenseUrl>http:/opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/ezaurum/http-api</projectUrl>        
+    <projectUrl>https://github.com/ezaurum/http-client</projectUrl>        
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>    
     <copyright>Copyright 2015, Ezaurum</copyright>
