@@ -6,15 +6,15 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>http:/opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/ezaurum/http-client</projectUrl>        
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/ezaurum/http-client</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>    
+    <description>$description$</description>
     <copyright>Copyright 2015, Ezaurum</copyright>
     <tags>http</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="6.0.8"/>
-  	</dependencies>
-  	<releaseNotes>Http Client</releaseNotes>
+    </dependencies>
+    <releaseNotes>Http Client</releaseNotes>
   </metadata>
 </package>
