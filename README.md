@@ -1,4 +1,4 @@
 http-api
 ========
 
-c# http api wrapper
+c# http client wrapper
