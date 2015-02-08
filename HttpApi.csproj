@@ -7,8 +7,8 @@
     <ProjectGuid>{2D30A1CD-F029-4222-B14C-305E690F475A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ezaurum.HttpApi</RootNamespace>
-    <AssemblyName>Ezaurum.HttpApi</AssemblyName>
+    <RootNamespace>Ezaurum.Http.Client</RootNamespace>
+    <AssemblyName>Ezaurum.Http.Client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -49,8 +49,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>nuget pack $(ProjectPath) -OutputDirectory $(TargetDir) -Prop Configuration=$(ConfigurationName)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

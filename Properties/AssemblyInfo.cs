@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // 어셈블리의 일반 정보는 다음 특성 집합을 통해 제어됩니다.
 // 어셈블리와 관련된 정보를 수정하려면
 // 이 특성 값을 변경하십시오.
-[assembly: AssemblyTitle("Ezaurum Http Api")]
-[assembly: AssemblyDescription("Ezaurum Http Api")]
+[assembly: AssemblyTitle("Http Client")]
+[assembly: AssemblyDescription("Http Client")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ezaurum")]
-[assembly: AssemblyProduct("Ezaurum Http Api")]
+[assembly: AssemblyProduct("Http Client")]
 [assembly: AssemblyCopyright("Copyright ©  2014 Ezaurum")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // 모든 값을 지정하거나 아래와 같이 '*'를 사용하여 빌드 번호 및 수정 버전이 자동으로
 // 지정되도록 할 수 있습니다.
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.1.5")]
-[assembly: AssemblyFileVersion("0.0.1.5")]
+[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: AssemblyFileVersion("0.1.0.0")]

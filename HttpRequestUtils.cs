@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Ezaurum.HttpAPI
+namespace Ezaurum.Http.Client
 {
     public static class HttpRequestUtils
     {
